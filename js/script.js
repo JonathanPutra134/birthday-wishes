@@ -8,6 +8,7 @@ const birthdayAudio = document.getElementById("birthdayAudio");
 const letterModal = document.getElementById("letterModal");
 const openLetterBtn = document.getElementById("openLetterBtn");
 const closeLetterBtn = document.getElementById("closeLetterBtn");
+const LOOP_START_SECONDS = 5;
 
 const syncBodyLock = () => {
   const anyModalOpen = document.querySelector(".modal-overlay:not(.hidden)");
@@ -43,6 +44,7 @@ if (closeModalBtn && birthdayModal) {
     syncBodyLock();
 
     if (birthdayAudio) {
+      birthdayAudio.currentTime = LOOP_START_SECONDS;
       birthdayAudio.play().catch(() => {
         // If browser still blocks playback, user can press play on audio controls.
       });
@@ -53,14 +55,19 @@ if (closeModalBtn && birthdayModal) {
 
 if (birthdayAudio) {
   birthdayAudio.volume = 0.5; // 50%
-  birthdayAudio.currentTime = 5; // start at 0:05
-  birthdayAudio.play().catch(() => {});
+  birthdayAudio.loop = true;
 }
 
 if (birthdayAudio) {
   birthdayAudio.addEventListener("loadedmetadata", () => {
-    birthdayAudio.currentTime = 5;
+    birthdayAudio.currentTime = LOOP_START_SECONDS;
   }, { once: true });
+
+  // Fallback loop for mobile browsers that sometimes ignore `loop`.
+  birthdayAudio.addEventListener("ended", () => {
+    birthdayAudio.currentTime = LOOP_START_SECONDS;
+    birthdayAudio.play().catch(() => {});
+  });
 }
 
 if (openLetterBtn && letterModal) {
