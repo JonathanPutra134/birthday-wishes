@@ -8,10 +8,35 @@ const birthdayAudio = document.getElementById("birthdayAudio");
 const letterModal = document.getElementById("letterModal");
 const openLetterBtn = document.getElementById("openLetterBtn");
 const closeLetterBtn = document.getElementById("closeLetterBtn");
+const letterAnimatedBlocks = letterModal
+  ? letterModal.querySelectorAll(".letter-paper p:not(.letter-date):not(.letter-sign)")
+  : [];
 
 const syncBodyLock = () => {
   const anyModalOpen = document.querySelector(".modal-overlay:not(.hidden)");
   document.body.classList.toggle("modal-open", Boolean(anyModalOpen));
+};
+
+const animateLetterText = () => {
+  let wordIndex = 0;
+  letterAnimatedBlocks.forEach((block) => {
+    if (!block.dataset.originalText) {
+      block.dataset.originalText = block.textContent.trim();
+    }
+
+    const words = block.dataset.originalText.split(/\s+/);
+    block.textContent = "";
+
+    words.forEach((word) => {
+      const wordEl = document.createElement("span");
+      wordEl.className = "word";
+      wordEl.textContent = word;
+      wordEl.style.animationDelay = `${wordIndex * 100}ms`;
+      block.appendChild(wordEl);
+      block.appendChild(document.createTextNode(" "));
+      wordIndex += 1;
+    });
+  });
 };
 
 startBtn.addEventListener("click", () => {
@@ -61,6 +86,7 @@ if (birthdayAudio) {
 
 if (openLetterBtn && letterModal) {
   openLetterBtn.addEventListener("click", () => {
+    animateLetterText();
     letterModal.classList.remove("hidden");
     syncBodyLock();
   });

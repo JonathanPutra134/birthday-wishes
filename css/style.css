@@ -168,6 +168,20 @@ section {
   background: #111;
 }
 
+.polaroid video {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #ded6c8;
+  background: #111;
+}
+
+.no-crop {
+  object-fit: contain !important;
+  background: #f6f2e9;
+}
+
 .polaroid figcaption {
   padding-top: 0.75rem;
   text-align: center;
@@ -239,6 +253,14 @@ section {
 
 .polaroid-big img {
   aspect-ratio: 4 / 3;
+}
+
+.polaroid-big video {
+  aspect-ratio: 3 / 3;
+
+  object-position: center;
+ 
+  transform-origin: center;
 }
 
 .reveal {
@@ -386,6 +408,15 @@ section {
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
+}
+
+.word {
+  opacity: 0;
+  display: inline-block;
+  animation: fadeWord 0.7s ease forwards;
+}
+@keyframes fadeWord {
+  to { opacity: 1; }
 }
 
 @media (max-width: 760px) {
